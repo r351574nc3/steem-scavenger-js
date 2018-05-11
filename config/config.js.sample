@@ -1,0 +1,27 @@
+export default config = {
+    voters: [
+        {
+            'name': 'r351574nc3',
+            'wif': ''
+        },
+        {
+            'name': 'socky',
+            'wif': ''
+        },
+        {
+            'name': 'bot',
+            'wif': '',
+            'delay': ''
+        }        
+    ],
+    authors: [
+        { 
+            'name': 'r351574nc3',
+            'weight': 10000
+        },
+        { 
+            'name': 'socky',
+            'weight': 5000
+        }
+    ]
+}

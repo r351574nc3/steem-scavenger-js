@@ -1,0 +1,30 @@
+{
+  "name": "steem-scavenger",
+  "version": "0.1.0",
+  "description": "Following/voting automation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/r351574nc3/steem-scavenger-js.git"
+  },
+  "keywords": [
+    "steem",
+    "voting",
+    "automation"
+  ],
+  "author": "Leo Przybylski",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/r351574nc3/steem-scavenger-js/issues"
+  },
+  "homepage": "https://github.com/r351574nc3/steem-scavenger-js#readme",
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "node-schedule": "^1.3.0",
+    "sc2-sdk": "^1.0.2",
+    "steem": "^0.7.1"
+  }
+}
