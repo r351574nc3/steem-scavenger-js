@@ -24,7 +24,7 @@ const comments = {
     unshift: (obj) => { return comment_queue.unshift(obj) }
 }
 
-export default bot = {
+module.exports = {
     run: () => {
         require('./task').execute();
     }

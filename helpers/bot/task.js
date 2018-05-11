@@ -1,11 +1,54 @@
 'use strict'
 
 const steem = require('steem')
+const Promise = require('bluebird')
 const { voters, authors } = require('../../config')
 
 module.exports = {
     execute
 }
+
+function get_author(author) {
+    const found = authors.filter((listed) => listed.name === author)
+    return  found ? found.pop() : null
+}
+
+function processComment(comment) {
+    const author = get_author(comment.author)
+
+    if (author) {
+        return upvote(comment)
+    }
+    return Promise.resolve(null)
+}
+
+
+function upvote(comment, author) {
+    return voters.map((voter) => {
+        const wrapper = () => {
+            return steem.broadcast.voteAsync(
+                voter.wif, 
+                voter.name, 
+                comment.author,
+                comment.permlink,
+                author.weight
+            )
+            .then((results) =>  {
+                console.log("Vote results: ", results)
+                return results;
+            },
+            (err) => {
+                console.log("Vote failed for %s: %s", voter.name, err.message)
+                return err
+            })
+        }
+
+        if (voter.delay) {
+            setTimeout(wrapper, voter.delay);
+        }
+    })
+}
+
 
 function execute() {
 
@@ -17,12 +60,6 @@ function execute() {
             return 
         }
         return Promise.resolve(results).spread((operation_name, operation) => {
-
-            if (counter % 1000 == 0) {
-                counter = 0
-                console.log("Processing %s on %s", operation, new Date())
-            }
-
             switch(operation_name) {
                 case 'comment':
                     if (operation.parent_author == '') {
@@ -32,19 +69,12 @@ function execute() {
                             });
                     }
                     break;
-                case 'vote':
-                    processVote(new Vote(operation))
-                    break;
-                case 'unvote':
-                    processUnvote(new Vote(operation))
-                    break;
                 default:
             }
-            counter++
-            heartbeat = moment();
         })
         .catch((err) => {
             console.log("Bot died. Restarting ... ", err)
+            execute()
         })
     })
 }

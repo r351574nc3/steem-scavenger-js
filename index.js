@@ -1,1 +1,3 @@
-import bot from 'helpers/bot'
+const bot = require('./helpers/bot')
+
+bot.run()
